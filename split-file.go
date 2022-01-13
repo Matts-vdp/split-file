@@ -105,6 +105,7 @@ func Clean(file string) {
 }
 
 func main() {
+	gb := flag.Int("gb", 0, "Size in Gb")
 	mb := flag.Int("mb", 0, "Size in Mb")
 	kb := flag.Int("kb", 0, "Size in Kb")
 	b := flag.Int("b", 0, "Size in byte")
@@ -126,6 +127,7 @@ func main() {
 	cutsize += int64(*b)
 	cutsize += int64(*kb * 1024)
 	cutsize += int64(*mb * 1024 * 1024)
+	cutsize += int64(*gb * 1024 * 1024 * 1024)
 	if cutsize == 0 {
 		log.Fatalln("Enter desired filesize")
 	}
