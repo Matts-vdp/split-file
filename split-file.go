@@ -8,6 +8,7 @@ import (
 	"strconv"
 )
 
+// Gets the size of the passed file
 func getSize(file string) int64 {
 	stat, err := os.Stat(file)
 	if err != nil {
@@ -16,6 +17,7 @@ func getSize(file string) int64 {
 	return stat.Size()
 }
 
+// Copies "num" bytes from the "in" file to the "out" file using "buffer"
 func copyBytes(in, out *os.File, num int64, buffer []byte) {
 	for num > 0 {
 		if num < int64(len(buffer)) {
@@ -33,6 +35,9 @@ func copyBytes(in, out *os.File, num int64, buffer []byte) {
 	}
 }
 
+// Cuts a file in parts
+// Each part has a size of "cutsize"
+// The resulting files are named "{file}.{id}"
 func CutFile(file string, cutsize int64) {
 	in, err := os.Open(file)
 	if err != nil {
@@ -60,7 +65,9 @@ func CutFile(file string, cutsize int64) {
 	fmt.Printf("%d/%d\n", i, size)
 }
 
-func mergeFile(file string) {
+// Merges the parts into 1 file
+// Pass the file path without ".id"
+func MergeFile(file string) {
 	out, err := os.Create(file)
 	if err != nil {
 		log.Fatal(err)
@@ -82,6 +89,7 @@ func mergeFile(file string) {
 	}
 }
 
+// Removes all partial files
 func Clean(file string) {
 	fi := 0
 	for {
@@ -108,8 +116,7 @@ func main() {
 		log.Fatalln("No filename given")
 	}
 	if *merge {
-		//samenzetten
-		mergeFile(*file)
+		MergeFile(*file)
 		return
 	} else if *clean {
 		Clean(*file)
